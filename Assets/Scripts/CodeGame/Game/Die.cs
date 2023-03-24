@@ -6,6 +6,6 @@ public class Die : MonoBehaviour
 {
     void OnTriggerEnter2D(Collider2D col)
     {
-        GameUI.Instance.ShowLose();
+        TheGameUI.Instance.ShowLose();
     }
 }

@@ -7,15 +7,15 @@ using UnityEngine;
 public class Robot : Singleton<Robot>
 {
     [SerializeField] private SpriteRenderer anh;
-    private GameDataManager gameData;
+    private GameDataManager gameDataManager;
 
     public Rigidbody2D rigidbody;
 
     void Start()
     {
-        gameData = GameDataManager.Instance;
+        gameDataManager = GameDataManager.Instance;
 
-        anh.sprite = gameData.anh[gameData.playerData.currentSkin];
+        anh.sprite = gameDataManager.anh[gameDataManager.playerData.currentSkin];
     }
 
     private void OnValidate()
@@ -31,23 +31,21 @@ public class Robot : Singleton<Robot>
         rigidbody.AddForce(Vector2.one * power, ForceMode2D.Force);
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    
+    
+    public void EndRun()
     {
-        rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+        rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 
     public void Run()
     {
         rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
     }
-
-    public void EndRun()
+    
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
+        rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
     }
     
-    // Update is called once per frame
-    void Update()
-    {
-    }
 }

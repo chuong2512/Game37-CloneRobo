@@ -4,15 +4,16 @@ using DG.Tweening;
 using RObo;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class GoDiChuyen : Singleton<GoDiChuyen>
+public class Movement : Singleton<Movement>
 {
     public float lastPoint = 2.2f;
-    public float Add = 0.5f;
+    [FormerlySerializedAs("Add")] public float add = 0.5f;
     public float speed = 1.5f;
-    public Vector3 pos;
+    [FormerlySerializedAs("pos")] public Vector3 position;
 
-    public cau cau;
+    [FormerlySerializedAs("cau")] public Bridge bridge;
 
     public GameObject[] cols;
 
@@ -23,7 +24,7 @@ public class GoDiChuyen : Singleton<GoDiChuyen>
         var col = Instantiate(cols[Random.Range(0, cols.Length)]
             ,transform);
         
-        col.transform.localPosition = pos + Vector3.right * lastPoint;
+        col.transform.localPosition = position + Vector3.right * lastPoint;
     }
 
     [Button]
@@ -35,13 +36,13 @@ public class GoDiChuyen : Singleton<GoDiChuyen>
         }
        
         Robot.Instance.Run();
-        transform.DOMoveX(transform.position.x - x - Add, Mathf.Abs((x+Add) / speed)).SetEase(Ease.Linear).OnComplete(() =>
+        transform.DOMoveX(transform.position.x - x - add, Mathf.Abs((x+add) / speed)).SetEase(Ease.Linear).OnComplete(() =>
         {
-            cau.Reset();
+            bridge.Reset();
             Robot.Instance.EndRun();
-            GameUI.Instance.SetState(State.Stop);
+            TheGameUI.Instance.SetState(State.Stop);
         });
 
-        cau.transform.DOMoveX(cau.transform.position.x - x - Add, Mathf.Abs((x+Add) / speed)).SetEase(Ease.Linear);
+        bridge.transform.DOMoveX(bridge.transform.position.x - x - add, Mathf.Abs((x+add) / speed)).SetEase(Ease.Linear);
     }
 }

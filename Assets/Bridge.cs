@@ -4,10 +4,11 @@ using DG.Tweening;
 using RObo;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class cau : Singleton<cau>
+public class Bridge : Singleton<Bridge>
 {
-    public LineRenderer lineRenderer;
+    [FormerlySerializedAs("lineRenderer")] public LineRenderer lineRen;
 
     private Vector3 pos;
 
@@ -21,20 +22,20 @@ public class cau : Singleton<cau>
     {
         transform.position = pos;
 
-        lineRenderer.SetPositions(new[] {Vector3.zero, Vector3.up * y});
+        lineRen.SetPositions(new[] {Vector3.zero, Vector3.up * y});
 
         if (rotate)
         {
             Rotate(y);
         }
     }
-
+    
     public void Rotate(float y)
     {
         transform.DORotate(Vector3.back * 90, 1f).SetEase(Ease.Linear)
-            .OnComplete(() => { GoDiChuyen.Instance.Move(y); });
+            .OnComplete(() => { Movement.Instance.Move(y); });
     }
-
+    
     public void Reset()
     {
         transform.DOKill();
@@ -42,4 +43,8 @@ public class cau : Singleton<cau>
         transform.rotation = Quaternion.identity;
         SetLine(0, false);
     }
+
+
+
+
 }

@@ -1,11 +1,23 @@
 using UnityEngine;
 
-public class BGSelector : MonoBehaviour
+public class BackgroundSelector : MonoBehaviour
 {
     private PlayerData playerData; //todo delete
     private GameDataManager gameData; 
     public int currentBG;
     public SkinItem[] skinItems;
+    
+    public void UnlockBG(int index)
+    {
+        if (!playerData.listBGs[index])
+        {
+            playerData.SubDiamond(Constant.priceUnlockBG);
+        }
+        
+        skinItems[index].Unlock();
+        
+        playerData.UnlockBG(index);
+    }
     
     void Start()
     {
@@ -50,19 +62,6 @@ public class BGSelector : MonoBehaviour
         
         CanvasUI.Instance.SetBG(gameData.bg[currentBG]);
         //todo add Playerdata
-    }
-
-
-    public void UnlockBG(int index)
-    {
-        if (!playerData.listBGs[index])
-        {
-            playerData.SubDiamond(Constant.priceUnlockBG);
-        }
-        
-        skinItems[index].Unlock();
-        
-        playerData.UnlockBG(index);
     }
 
 }

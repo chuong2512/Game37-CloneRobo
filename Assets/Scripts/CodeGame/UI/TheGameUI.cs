@@ -9,10 +9,11 @@ using UnityEngine.UI;
 
 public enum State
 {
-    Runing, Stop
+    Runing,
+    Stop
 }
 
-public class GameUI : Singleton<GameUI>
+public class TheGameUI : Singleton<TheGameUI>
 {
     public Button back;
     public Button back1;
@@ -22,13 +23,13 @@ public class GameUI : Singleton<GameUI>
 
     public State currentState = State.Stop;
 
-    
+
     // Start is called before the first frame update
     void Start()
     {
         back?.onClick.AddListener(ExitGame);
-        back1?.onClick.AddListener(ExitGame);
         menu?.onClick.AddListener(RestartGame);
+        back1?.onClick.AddListener(ExitGame);
         
         SetState(State.Stop);
     }
@@ -38,7 +39,7 @@ public class GameUI : Singleton<GameUI>
     public float max = 3;
     public float rangeMove = 0;
     public int direction = 1;
-    
+
     void Update()
     {
         if (currentState == State.Stop)
@@ -51,28 +52,22 @@ public class GameUI : Singleton<GameUI>
                 {
                     direction = -1;
                 }
-                
+
                 if (rangeMove < 0)
                 {
                     direction = 1;
                 }
-                
-                cau.Instance.SetLine(rangeMove);
+
+                Bridge.Instance.SetLine(rangeMove);
             }
-            
+
             if (Input.GetMouseButtonUp(0))
             {
-                cau.Instance.SetLine(rangeMove, true);
+                Bridge.Instance.SetLine(rangeMove, true);
                 rangeMove = 0;
                 SetState(State.Runing);
             }
         }
-    }
-
-    
-    private void ExitGame()
-    {
-        SceneManager.LoadScene("Menu");
     }
 
     public void ShowLose()
@@ -80,11 +75,16 @@ public class GameUI : Singleton<GameUI>
         lose.SetActive(true);
     }
 
+    private void ExitGame()
+    {
+        SceneManager.LoadScene("Menu");
+    }
+
     public void RestartGame()
     {
         SceneManager.LoadScene("Game");
     }
-    
+
     [Button]
     public void Jump()
     {
